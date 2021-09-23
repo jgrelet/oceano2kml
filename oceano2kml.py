@@ -17,7 +17,7 @@ def processArgs():
             vertical profiles of CTD, LADCP and XBT stations.",
 
         usage='\npython oceano2kml.py\n'
-        'python oceano2kml.py -c config.toml\n'
+        'python oceano2kml.py -c <config.toml>\n'
         'python oceano2kml.py -d\n'
         'python oceano2kml.py -h\n'
         '\n',
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     '''
     usage:
     > python oceano2kml.py 
-    > python oceano2kml.py -c config.toml
+    > python oceano2kml.py -c <config.toml>
     '''
     # recover and process line arguments
     parser = processArgs()
