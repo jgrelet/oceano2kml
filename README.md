@@ -11,6 +11,6 @@ The reading of time-series files as well as ASCII files will be developed with t
 
 ```bash
 python oceano2kml.py 
-python oceano2kml.py -c config.toml
-python oceano2kml.py -c config.toml -d
+python oceano2kml.py -c <config.toml>
+python oceano2kml.py -c <config.toml> -d
 ```
