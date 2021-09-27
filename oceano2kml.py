@@ -53,8 +53,9 @@ if __name__ == "__main__":
 
     # CTD
     if cfg['ctd']['file'] != 'none':
+        print("CTD: ", end = '', flush=True)
         ctd = Dataset(cfg['ctd']['file'], mode='r')
-        profiles = ctd.variables[cfg['profile']][:].tolist()
+        profiles = ctd.variables[cfg['profile']][:]
         ctd_url = cfg['ctd']['plots']
 
         kml = simplekml.Kml()
@@ -75,13 +76,14 @@ if __name__ == "__main__":
             point.coords=[(ctd.variables[cfg['longitude']][i], ctd.variables[cfg['latitude']][i], elevation)]
             point.altitudemode = simplekml.AltitudeMode.relativetoground 
             point.style = style
-        print("CTD: {} stations".format(len(profiles)))
+        print("{} stations".format(len(profiles)))
         ctd.close()
 
     # XBT
     if cfg['xbt']['file'] != 'none':
+        print("XBT: ", end = '', flush=True)
         xbt = Dataset(cfg['xbt']['file'], mode='r')
-        profiles = xbt.variables[cfg['profile']][:].tolist()
+        profiles = xbt.variables[cfg['profile']][:]
         xbt_url = cfg['xbt']['plots']
 
         # plot XBT profiles icons green
@@ -98,13 +100,14 @@ if __name__ == "__main__":
             point.coords=[(xbt.variables[cfg['longitude']][i], xbt.variables[cfg['latitude']][i], elevation)]
             point.altitudemode = simplekml.AltitudeMode.relativetoground 
             point.style = style
-        print("XBT: {} profiles".format(len(profiles)))
+        print("{} profiles".format(len(profiles)))
         xbt.close()
 
     # TSG
     if cfg['tsg']['file'] != 'none':
+        print("TSG: ", end = '',flush=True)
         tsg = Dataset(cfg['tsg']['file'], mode='r')
-        data = tsg.variables[cfg['time']][:].tolist()
+        data = tsg.variables[cfg['time']][:]
         tsg_url = cfg['tsg']['plots']
 
         # plot TSG data as lineString in blue
@@ -121,12 +124,12 @@ if __name__ == "__main__":
         for i in range(0, len(data)):    
             ls.coords.addcoordinates([(tsg.variables[cfg['longitude']][i], 
                 tsg.variables[cfg['latitude']][i])])
-        print("TSG: {} data".format(len(data)))
+        print("{} data".format(len(data)))
         tsg.close()
 
     kml.save(kml_file)
     print("File {} saved".format(kml_file))
-    #print(kml.kml())
+    logging.debug(kml.kml())
     
   
     
