@@ -8,10 +8,25 @@ This version is written in Python 3 and manages profile and trajectory data.
 
 The reading of time-series files as well as ASCII files will be developed with the fileExtractor module in a future version.
 
-## usage
+## Installation
+
+Create virtual env with conda, ex:
+
+```sh
+conda create -n oceano2kml python=3.9
+conda activate oceano2kml 
+```
+
+Install all mandatory modules:
+
+```sh
+conda install -c conda-forge netCDF4 simplekml toml 
+```
+
+## Usage
 
 ```bash
-python oceano2kml.py 
+python oceano2kml.py -h
 python oceano2kml.py -c <config.toml>
 python oceano2kml.py -c <config.toml> -d
 ```
