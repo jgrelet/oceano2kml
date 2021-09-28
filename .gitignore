@@ -130,3 +130,5 @@ dmypy.json
 
 # kml files
 *.kml
+!examples/*.kml
+
