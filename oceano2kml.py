@@ -5,9 +5,11 @@ import simplekml
 from configparser import ConfigParser
 import argparse
 import toml
+import os.path
 import logging
 
 elevation = 0
+path = 'examples'  # default path where to write result kml file
 
 def processArgs():
     parser = argparse.ArgumentParser(
@@ -18,14 +20,15 @@ def processArgs():
 
         usage='\npython oceano2kml.py\n'
         'python oceano2kml.py -c <config.toml>\n'
+        'python oceano2kml.py -c <config.toml> -o <dir>\n'
         'python oceano2kml.py -d\n'
         'python oceano2kml.py -h\n'
         '\n',
         epilog='J. Grelet IRD US191 - Sep 2021 / Nov 2021')
     parser.add_argument('-d', '--debug', help='display debug informations',
                         action='store_true')
-    #parser.add_argument('-h', '--help', help='display help informations',
-    #                    action='store_true')
+    parser.add_argument('-o', '--out', help="output directory, (default: %(default)s)",
+                        default='examples')
     parser.add_argument('-c', '--config', help="toml configuration file, (default: %(default)s)",
                         default='config.toml')
     return parser
@@ -48,8 +51,6 @@ if __name__ == "__main__":
     # read config Toml file and get the physical parameter list (Roscop code) for the specified instrument
     cfg = toml.load(args.config)
     logging.debug(cfg)
-    cruise = cfg['cruise'].lower()
-    kml_file = f'{cruise}.kml'
 
     # CTD
     if cfg['ctd']['file'] != 'none':
@@ -127,8 +128,19 @@ if __name__ == "__main__":
         print("{} data".format(len(data)))
         tsg.close()
 
-    kml.save(kml_file)
-    print("File {} saved".format(kml_file))
+    # save kml file to the right directory
+    cruise = cfg['cruise'].lower()
+    file_name = f'{cruise}.kml'
+    if args.out :
+        path = args.out
+    if path == '.':         # os.path.join failed with path = '.' !
+        path = os.getcwd()
+    dest = os.path.normpath(os.path.join(path, file_name))
+    if not os.path.exists(os.path.dirname(dest)):
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+
+    kml.save(dest)
+    print("File {} saved".format(dest))
     logging.debug(kml.kml())
     
   
