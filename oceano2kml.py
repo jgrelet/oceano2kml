@@ -6,6 +6,7 @@ from configparser import ConfigParser
 import argparse
 import toml
 import logging
+from datetime import datetime
 
 elevation = 0
 
@@ -36,6 +37,8 @@ if __name__ == "__main__":
     > python oceano2kml.py 
     > python oceano2kml.py -c <config.toml>
     '''
+    start_time = datetime.now()
+
     # recover and process line arguments
     parser = processArgs()
     args = parser.parse_args()
@@ -130,6 +133,9 @@ if __name__ == "__main__":
     kml.save(kml_file)
     print("File {} saved".format(kml_file))
     logging.debug(kml.kml())
+
+    # display execution elasped time
+    print('Duration: {}'.format(datetime.now() - start_time))
     
   
     
