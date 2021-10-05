@@ -28,6 +28,8 @@ def processArgs():
         epilog='J. Grelet IRD US191 - Sep 2021 / Nov 2021')
     parser.add_argument('-d', '--debug', help='display debug informations',
                         action='store_true')
+    parser.add_argument('-t', '--time', help='display execution time',
+                        action='store_true')
     parser.add_argument('-o', '--out', help="output directory, (default: %(default)s)",
                         default='examples')
     parser.add_argument('-c', '--config', help="toml configuration file, (default: %(default)s)",
@@ -147,7 +149,8 @@ if __name__ == "__main__":
     logging.debug(kml.kml())
 
     # display execution elasped time
-    print('Duration: {}'.format(datetime.now() - start_time))
+    if args.time:
+        print('Duration: {}'.format(datetime.now() - start_time))
     
   
     
