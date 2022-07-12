@@ -1,4 +1,4 @@
-# oceano2kml
+# oceano2kml [![Build Status](https://travis-ci.com/jgrelet/oceano2kml.svg?branch=master)](https://app.travis-ci.com/github/jgrelet/oceano2kml)
 
 This program is the Python and updated version of the Golang cruiseTrk2oceano.
 oceano2kml is used for rendering oceanographic data, CTD, XBT profiles and TSG (thermosalinograph) plots to Google Earth Keyhole Markup Language (KML) files.

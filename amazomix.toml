@@ -20,6 +20,14 @@ name_format = 5
 # split = "PRFL,1,int,BEGIN_DATE,2,string,BEGIN_TIME,3,string,END_DATE,4,string,END_TIME,5,string,LAT,6,string,LAT_S,7,string,LON,8,string,LON_S,9,string,PMAX,10,float64,BOTTOM_DEPTH,11,float64"
 plots = "http://www.brest.ird.fr/us191/cruises/amazomix/CTD/AMAZOMIX-{:05d}_CTD.png"
 
+[ladcp]
+#file = "none"
+file = 'data/amazomix/OS_AMAZOMIX_LADCP.nc'
+name = 'St'
+name_format = 5
+plots = "http://www.brest.ird.fr/us191/cruises/amazomix/LADCP/AMAZOMIX-{:05d}_ADCP.png"
+
+
 [xbt]
 #file = "none"
 file = 'data/amazomix/OS_AMAZOMIX_XBT.nc'

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # https://www.sigterritoires.fr/index.php/kml2-comment-creer-des-bulles-ballons-personnalisees/
 # https://simplekml.readthedocs.io/en/latest/geometries.html
 from netCDF4 import Dataset
