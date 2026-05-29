@@ -4,7 +4,6 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
-- Added project directives in `AGENTS.md`.
 - Added LADCP profile support through the `[ladcp]` TOML section.
 - Refactored profile KML generation for CTD, LADCP, and XBT.
 - Added clearer validation for configuration keys, input files, and NetCDF
