@@ -16,3 +16,6 @@ All notable changes to this project are documented in this file.
   generation.
 - Added GitHub Actions workflows for CI and tagged releases.
 - Documented CI, release, and regression test commands.
+- Removed the obsolete Travis CI configuration and badge.
+- Set Python 3.11 as the default runtime and documented mamba-based environment
+  creation and updates.

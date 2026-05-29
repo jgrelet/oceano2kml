@@ -1,0 +1,8 @@
+name: oceano2kml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - netcdf4
+  - simplekml
+  - toml

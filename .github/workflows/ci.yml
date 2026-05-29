@@ -10,38 +10,38 @@ on:
 
 jobs:
   tests:
-    name: Python ${{ matrix.python-version }}
+    name: Python 3.11
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version:
-          - "3.9"
-          - "3.12"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up mamba environment
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: ${{ matrix.python-version }}
-          cache: pip
-          cache-dependency-path: |
-            requirements.txt
-            requirements-dev.txt
+          miniforge-version: latest
+          environment-file: environment.yml
+          activate-environment: oceano2kml
+          use-mamba: true
 
-      - name: Install dependencies
-        run: python -m pip install -r requirements-dev.txt
+      - name: Show environment
+        shell: bash -el {0}
+        run: |
+          python --version
+          mamba info
+          mamba list
 
       - name: Syntax check
+        shell: bash -el {0}
         run: python -m py_compile oceano2kml.py
 
       - name: Regression tests
+        shell: bash -el {0}
         run: python -m unittest discover -s tests -v
 
       - name: Smoke test bundled examples
+        shell: bash -el {0}
         run: |
           python oceano2kml.py -c pirata-fr31.toml -o /tmp/oceano2kml-check
           python oceano2kml.py -c amazomix.toml -o /tmp/oceano2kml-check

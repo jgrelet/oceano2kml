@@ -1,4 +1,4 @@
-# oceano2kml [![Build Status](https://app.travis-ci.com/jgrelet/oceano2kml.svg?branch=main)](https://app.travis-ci.com/github/jgrelet/oceano2kml)
+# oceano2kml [![CI](https://github.com/jgrelet/oceano2kml/actions/workflows/ci.yml/badge.svg)](https://github.com/jgrelet/oceano2kml/actions/workflows/ci.yml)
 
 This program is the Python and updated version of the Golang cruiseTrack2kml.
 oceano2kml is used for rendering oceanographic data, CTD, LADCP, XBT profiles
@@ -10,17 +10,17 @@ This version is written in Python3 and manages profile and trajectory data.
 
 ## Installation
 
-Create virtual env with conda, ex:
+Create the environment with mamba:
 
 ```sh
-conda create -n oceano2kml python=3.9
-conda activate oceano2kml 
+mamba env create -f environment.yml
+mamba activate oceano2kml
 ```
 
-Install all mandatory modules:
+Update the environment after dependency changes:
 
 ```sh
-conda install -c conda-forge netCDF4 simplekml toml 
+mamba env update -n oceano2kml -f environment.yml --prune
 ```
 
 ## Usage
@@ -76,18 +76,18 @@ Set `file = "none"` to disable an instrument section.
 Run a syntax check and generate the bundled examples into a temporary directory:
 
 ```bash
-python3 -m py_compile oceano2kml.py
-python3 -m unittest discover -s tests -v
-python3 oceano2kml.py -c pirata-fr31.toml -o /tmp/oceano2kml-check
-python3 oceano2kml.py -c amazomix.toml -o /tmp/oceano2kml-check
+python -m py_compile oceano2kml.py
+python -m unittest discover -s tests -v
+python oceano2kml.py -c pirata-fr31.toml -o /tmp/oceano2kml-check
+python oceano2kml.py -c amazomix.toml -o /tmp/oceano2kml-check
 ```
 
 ## Continuous integration
 
 GitHub Actions workflows are stored in `.github/workflows/`.
 
-- `ci.yml` runs on pushes, pull requests, and manual dispatch. It installs the
-  Python dependencies, compiles the script, runs the regression tests, and
+- `ci.yml` runs on pushes, pull requests, and manual dispatch. It creates the
+  Python 3.11 mamba environment, compiles the script, runs the regression tests, and
   generates the bundled examples.
 - `release.yml` runs on tags matching `v*` or by manual dispatch with a tag. It
   runs the checks, builds a ZIP archive, and creates a GitHub release.
