@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, for example v1.0.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: |
+          python -m py_compile oceano2kml.py
+          python -m unittest discover -s tests -v
+
+      - name: Build release archive
+        run: |
+          mkdir -p dist/oceano2kml
+          cp oceano2kml.py README.md LICENSE CHANGELOG.md requirements.txt dist/oceano2kml/
+          cp pirata-fr31.toml amazomix.toml dist/oceano2kml/
+          cp -r examples dist/oceano2kml/
+          cd dist
+          zip -r oceano2kml-${RELEASE_TAG}.zip oceano2kml
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${RELEASE_TAG}" \
+            "dist/oceano2kml-${RELEASE_TAG}.zip" \
+            --title "oceano2kml ${RELEASE_TAG}" \
+            --notes-file CHANGELOG.md

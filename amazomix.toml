@@ -22,7 +22,7 @@ plots = "http://www.brest.ird.fr/us191/cruises/amazomix/CTD/AMAZOMIX-{:05d}_CTD.
 
 [ladcp]
 #file = "none"
-file = 'data/amazomix/OS_AMAZOMIX_LADCP.nc'
+file = 'data/amazomix/OS_AMAZOMIX_ADCP.nc'
 name = 'St'
 name_format = 5
 plots = "http://www.brest.ird.fr/us191/cruises/amazomix/LADCP/AMAZOMIX-{:05d}_ADCP.png"
