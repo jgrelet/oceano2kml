@@ -21,3 +21,4 @@ All notable changes to this project are documented in this file.
   creation and updates.
 - Added README instructions for installing mamba before creating the project
   environment.
+- Added `TODO.md` with future documentation and screenshot tasks.
