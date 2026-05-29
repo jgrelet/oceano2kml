@@ -10,6 +10,21 @@ This version is written in Python3 and manages profile and trajectory data.
 
 ## Installation
 
+Install mamba first. The recommended option is Miniforge, which provides
+`mamba` and conda-forge by default:
+
+```sh
+curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+bash Miniforge3-Linux-x86_64.sh
+```
+
+If conda is already installed, mamba can also be installed in the base
+environment:
+
+```sh
+conda install -n base -c conda-forge mamba
+```
+
 Create the environment with mamba:
 
 ```sh

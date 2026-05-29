@@ -19,3 +19,5 @@ All notable changes to this project are documented in this file.
 - Removed the obsolete Travis CI configuration and badge.
 - Set Python 3.11 as the default runtime and documented mamba-based environment
   creation and updates.
+- Added README instructions for installing mamba before creating the project
+  environment.
