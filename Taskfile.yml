@@ -1,0 +1,117 @@
+version: '3'
+
+vars:
+  PYTHON: python
+  OUTPUT_DIR: "examples"
+  TEMP_DIR: "/tmp/oceano2kml-check"
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - |
+        echo "task: Available tasks for this project:"
+        echo "* check:               Run syntax check and linting"
+        echo "* check:syntax:        Python syntax check only"
+        echo "* check:imports:       Check that all imports work"
+        echo "* test:                Run all tests (unit + regression)"
+        echo "* test:unit:          Run unit tests only"
+        echo "* test:regression:    Run regression tests only"
+        echo "* test:quick:         Run unit tests + smoke test (fast)"
+        echo "* generate:           Generate KML for all configs to examples/"
+        echo "* generate:pirata:    Generate KML for PIRATA-FR31"
+        echo "* generate:amazomix: Generate KML for AMAZOMIX"
+        echo "* generate:temp:      Generate KML files to temp directory"
+        echo "* ci:                 Run full CI pipeline (syntax + tests + generate)"
+        echo "* clean:              Remove temporary generated files"
+        echo "* clean:all:          Remove all generated KML files"
+
+  check:
+    desc: Run syntax check and linting
+    cmds:
+      - task: check:syntax
+      - task: check:imports
+
+  check:syntax:
+    desc: Python syntax check
+    cmds:
+      - "{{.PYTHON}} -m py_compile oceano2kml.py"
+
+  check:imports:
+    desc: Check that all imports work
+    cmds:
+      - "{{.PYTHON}} -c 'import oceano2kml'"
+
+  test:
+    desc: Run all tests (unit + regression)
+    cmds:
+      - task: test:unit
+      - task: test:regression
+
+  test:unit:
+    desc: Run unit tests only
+    cmds:
+      - "{{.PYTHON}} -m unittest tests.test_validation -v"
+
+  test:regression:
+    desc: Run regression tests only
+    cmds:
+      - "{{.PYTHON}} -m unittest tests.test_regression -v"
+
+  test:quick:
+    desc: Run unit tests + smoke test (fast feedback)
+    cmds:
+      - task: test:unit
+      - "{{.PYTHON}} oceano2kml.py -c pirata-fr31.toml -o {{.TEMP_DIR}} -t"
+      - "{{.PYTHON}} oceano2kml.py -c amazomix.toml -o {{.TEMP_DIR}} -t"
+
+  generate:
+    desc: Generate KML files for all configs
+    cmds:
+      - task: generate:pirata
+      - task: generate:amazomix
+
+  generate:pirata:
+    desc: Generate KML for PIRATA-FR31 config
+    cmds:
+      - "{{.PYTHON}} oceano2kml.py -c pirata-fr31.toml -o {{.OUTPUT_DIR}}"
+
+  generate:amazomix:
+    desc: Generate KML for AMAZOMIX config
+    cmds:
+      - "{{.PYTHON}} oceano2kml.py -c amazomix.toml -o {{.OUTPUT_DIR}}"
+
+  generate:temp:
+    desc: Generate KML files to temp directory for verification
+    cmds:
+      - mkdir -p {{.TEMP_DIR}}
+      - "{{.PYTHON}} oceano2kml.py -c pirata-fr31.toml -o {{.TEMP_DIR}}"
+      - "{{.PYTHON}} oceano2kml.py -c amazomix.toml -o {{.TEMP_DIR}}"
+    status:
+      - test -f "{{.TEMP_DIR}}/pirata-fr31.kml"
+      - test -f "{{.TEMP_DIR}}/amazomix.kml"
+
+  ci:
+    desc: Run full CI pipeline (syntax + unit tests + regression + generate)
+    cmds:
+      - task: check:syntax
+      - task: test:unit
+      - task: test:regression
+      - task: generate:temp
+
+  clean:
+    desc: Remove temporary generated files
+    cmds:
+      - rm -rf {{.TEMP_DIR}}
+    status:
+      - test ! -d {{.TEMP_DIR}}
+
+  clean:all:
+    desc: Remove all generated KML files (including examples/)
+    cmds:
+      - rm -f examples/*.kml
+      - rm -rf {{.TEMP_DIR}}
+    status:
+      - test ! -f examples/pirata-fr31.kml
+      - test ! -f examples/amazomix.kml
+      - test ! -d {{.TEMP_DIR}}
